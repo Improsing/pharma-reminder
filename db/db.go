@@ -7,7 +7,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-const dsn = "user=postgres password=pharma dbname=medscheduler sslmode=disable"
+const dsn = "user=postgres password=123 dbname=medscheduler sslmode=disable"
 
 func Connect() (*sql.DB, error) {
 	db, err := sql.Open("postgres", dsn) 
@@ -20,13 +20,15 @@ func Connect() (*sql.DB, error) {
 func InitSchema(db *sql.DB) {
 	query := `
 	CREATE TABLE IF NOT EXISTS schedules (
-	id SERIAL PRIMARY KEY,
-	user_id TEXT NOT NULL,
-	medicine_name TEXT NOT NULL,
-	frequency INT NOT NULL,
-	duration INT,
-	start_time TIMESTAMP NOT NULL
-);`
+		id SERIAL PRIMARY KEY,
+		user_id TEXT NOT NULL,
+		medicine_name TEXT NOT NULL,
+		frequency INT NOT NULL,
+		duration INT,
+		start_time TIMESTAMP NOT NULL
+	);
+	ALTER TABLE schedules ADD COLUMN IF NOT EXISTS notes TEXT;
+	`
 _, err := db.Exec(query)
 if err != nil {
 	log.Fatal("Failed to initialize schema:", err)
