@@ -4,12 +4,6 @@ import (
 	"log"
 	"net/http"
 
-	//"pharma-reminder/db"
-	//"pharma-reminder/handlers"
-
-	//"github.com/Improsing/pharma-reminder/db"
-	//"github.com/Improsing/pharma-reminder/handlers"
-	//"github.com/golang-migrate/migrate/v4/database"
 	"github.com/Improsing/pharma-reminder/db"
 	"github.com/Improsing/pharma-reminder/handlers"
 	"github.com/gorilla/mux"
@@ -29,7 +23,7 @@ func main() {
 	r.HandleFunc("/schedule", handlers.GetSchedules(database)).Methods("GET")
 	r.HandleFunc("/schedule", handlers.GetSchedule(database)).Methods("GET")
 
-	log.Println("Сервер запущен на порту :5432")
-	log.Fatal(http.ListenAndServe(":5432", r))
+	log.Println("Сервер запущен на порту :8080")
+	log.Fatal(http.ListenAndServe(":8080", r))
 	
 }

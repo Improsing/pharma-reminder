@@ -2,20 +2,42 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
+	"os"
 
 	_ "github.com/lib/pq"
 )
 
-const dsn = "user=postgres password=123 dbname=medscheduler sslmode=disable"
+//const dsn = "user=postgres password=123 dbname=medscheduler sslmode=disable"
+
+//func Connect() (*sql.DB, error) {
+//	db, err := sql.Open("postgres", dsn)
+//		if err != nil {
+//			return nil, err
+//		}
+//		return db, db.Ping()
+//	}
+
+func getDBConfig() string {
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	dbname := os.Getenv("DB_NAME")
+
+	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbname)
+}
 
 func Connect() (*sql.DB, error) {
-	db, err := sql.Open("postgres", dsn) 
-		if err != nil {
-			return nil, err
-		}
-		return db, db.Ping()
+	dsn := getDBConfig()
+	db, err := sql.Open("postgres", dsn)
+	if err != nil {
+		return nil, err
 	}
+	return db, db.Ping()
+}
 
 func InitSchema(db *sql.DB) {
 	query := `
